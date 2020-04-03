@@ -27,25 +27,25 @@ import kotlinx.coroutines.launch
 
 class MLExecutionViewModel : ViewModel() {
 
-  private val _styledBitmap = MutableLiveData<ModelExecutionResult>()
+    private val _styledBitmap = MutableLiveData<ModelExecutionResult>()
 
-  val styledBitmap: LiveData<ModelExecutionResult>
-    get() = _styledBitmap
+    val styledBitmap: LiveData<ModelExecutionResult>
+        get() = _styledBitmap
 
-  private val viewModelJob = Job()
-  private val viewModelScope = CoroutineScope(viewModelJob)
+    private val viewModelJob = Job()
+    private val viewModelScope = CoroutineScope(viewModelJob)
 
-  fun onApplyStyle(
-    context: Context,
-    contentFilePath: String,
-    styleFilePath: String,
-    styleTransferModelExecutor: StyleTransferModelExecutor,
-    inferenceThread: ExecutorCoroutineDispatcher
-  ) {
-    viewModelScope.launch(inferenceThread) {
-      val result =
-        styleTransferModelExecutor.execute(contentFilePath, styleFilePath, context)
-      _styledBitmap.postValue(result)
+    fun onApplyStyle(
+        context: Context,
+        contentFilePath: String,
+        styleFilePath: String,
+        styleTransferModelExecutor: StyleTransferModelExecutor,
+        inferenceThread: ExecutorCoroutineDispatcher
+    ) {
+        viewModelScope.launch(inferenceThread) {
+            val result =
+                styleTransferModelExecutor.execute(contentFilePath, styleFilePath, context)
+            _styledBitmap.postValue(result)
+        }
     }
-  }
 }
